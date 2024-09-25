@@ -1,0 +1,26 @@
+{
+	"manifest_version": 3,
+
+	"name": "Roll20 Pixels Dice Roller",
+	"description": "Pairs a Pixels dice roll with your Roll20 character sheet or macros roll",
+	"version": "0.1.0",
+	
+	"default_locale": "en",
+	"icons": {
+		"48": "48icon.png",
+		"128": "128icon.png"
+	},
+	
+	"action": {
+		"default_popup": "index.html",
+		"default_title": "Roll20 Pixels Dice Roller"
+	},
+
+	"content_security_policy": {
+		"extension_pages": "script-src 'self'; object-src 'self'"
+	}, 
+	"permissions": [
+		"activeTab",
+		"scripting"
+	]
+}

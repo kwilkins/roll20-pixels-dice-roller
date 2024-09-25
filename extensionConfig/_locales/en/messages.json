@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Roll20 Pixels Dice Roller",
+    "description": "The title of the application, displayed in the web store."
+  },
+  "appDesc": {
+    "message": "Pairs a Pixels dice roll with your Roll20 character sheet or macros roll.", 
+    "description":"The description of the application, displayed in the web store."
+  }
+}
