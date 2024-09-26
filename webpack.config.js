@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-  entry: { main: './src/index', contentScript: './src/contentScript' },
+  entry: { main: './src/index', selectPixel: './src/selectPixel' },
   mode: 'development',
   devServer: {
     static: path.join(__dirname, 'dist'),

@@ -11,12 +11,12 @@ import { getCurrentActiveTabId } from "./getCurrentActiveTab";
 export const executeContentScript = async (): Promise<void> => {
   const tabId = await getCurrentActiveTabId();
 
-  executeContentScriptFile(tabId);
+  return executeContentScriptFile(tabId);
 };
 
-const executeContentScriptFile = (tabId: number): void => {
-  chrome.scripting.executeScript({
-    files: ['contentScript.js'],
+const executeContentScriptFile = async (tabId: number): Promise<void> => {
+  await chrome.scripting.executeScript({
+    files: ['selectPixel.js'],
     target: {
       tabId: tabId
     }
