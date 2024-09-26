@@ -12,22 +12,26 @@ requestPixel,
 } from "@systemic-games/pixels-web-connect";
 import { addMessageListener, sendMessageToExtension } from "./chromeMessaging";
 import { MessageAction } from "./messageAction";
+import { postChatMessage } from './roll20Helpers';
 
-if ((window as any).roll20PixelsDiceRoller === undefined) {
+if (!window.location.href.startsWith('chrome-extension:') && (window as any).roll20PixelsDiceRoller === undefined) {
   (window as any).roll20PixelsDiceRoller = true;
 
   const state = {
     rollBonus: 0
-  }
+  };
 
   const pixel = await requestPixel();
-
   console.log("Connecting to pixel...");
   await repeatConnect(pixel);
   
+  console.log(state);
   // add a listener for Pixel rolls
   pixel.addEventListener('roll', (roll: number) => {
-    console.log(`Pixel rolled: ${roll+state.rollBonus} (🎲${roll} + ${state.rollBonus})`);
+    console.log(state);
+    const rollMessage = `Pixel rolled: ${roll + state.rollBonus} (🎲${roll} + ${state.rollBonus})`;
+    postChatMessage(rollMessage)
+    console.log(rollMessage);
   });
 
   // add a listener for Pixel status

@@ -52,7 +52,7 @@ const App: FunctionComponent = () => {
       (message) => {
         console.log(message);
         setPixelConnectionStatus(message.status)
-    });
+      });
 
     // send message to confirm pixel status
     sendMessageToContentScript({
