@@ -3,7 +3,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
-  entry: { main: './src/index', selectPixel: './src/selectPixel' },
+  entry: {
+    main: './src/index',
+    selectPixel: './src/contentScripts/selectPixel',
+    roll20Scraper: './src/contentScripts/roll20Scraper'
+  },
   mode: 'development',
   devServer: {
     static: path.join(__dirname, 'dist'),
