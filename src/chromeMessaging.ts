@@ -5,8 +5,8 @@
  */
 
 import { getCurrentActiveTabId } from "./getCurrentActiveTab";
-import { Message } from "./message";
-import { MessageAction } from "./messageAction";
+import { Message } from "./types/message";
+import { MessageAction } from "./types/messageAction";
 
 export const sendMessageToExtension = async <E extends MessageAction>(message: Message<E>): Promise<void> => {
   return sendMessageInternal(message);

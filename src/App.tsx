@@ -10,9 +10,9 @@ import { SpinnerIosFilled } from "@fluentui/react-icons";
 import {
   PixelStatus
 } from '@systemic-games/pixels-web-connect';
-import { executeContentScript } from './activeTabScriptExecutor';
-import { MessageAction } from './messageAction';
+import { MessageAction } from './types/messageAction';
 import { addMessageListener, sendMessageToContentScript } from './chromeMessaging';
+import { Dnd5eCharacterSheetBonuses } from './types/dnd5e';
 
 const appWidth = '125px';
 const useStyles = makeStyles({
@@ -33,6 +33,13 @@ const useStyles = makeStyles({
  */
 const App: FunctionComponent = () => {
   const [pixelConnectionStatus, setPixelConnectionStatus] = useState<PixelStatus>('disconnected');
+  const [characterSheetData, setCharacterSheetData] = useState<Record<string, Dnd5eCharacterSheetBonuses>>({});
+
+  const sendSelectPixelMessage = useCallback(() => {
+    sendMessageToContentScript({
+      action: MessageAction.PixelConnectionRequest
+    })
+  }, []);
 
   const sendRollBonusValue = useCallback((_ev: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
     const value = Number.parseInt(data.value, 10);
@@ -48,15 +55,38 @@ const App: FunctionComponent = () => {
 
   useEffect(() => {
     // add a listener for extension pixel connection status
-    addMessageListener<MessageAction.PixelConnectionStatusResponse>(
+    addMessageListener<MessageAction.PixelConnectionResponse>(
       (message) => {
         console.log(message);
-        setPixelConnectionStatus(message.status)
+        setPixelConnectionStatus(message.status);
+      });
+    
+    // add a listener for extension pixel connection status
+    addMessageListener<MessageAction.PixelStatusResponse>(
+      (message) => {
+        console.log(message);
+        setPixelConnectionStatus(message.status);
+      });
+      
+    // add a listener for extension character sheet data
+    addMessageListener<MessageAction.CharacterSheetResponse>(
+      (message) => {
+        console.log(message);
+        setCharacterSheetData((value) => {
+          return {
+            ...value,
+            [message.characterName]: message.bonuses
+          }
+        });
       });
 
     // send message to confirm pixel status
     sendMessageToContentScript({
-      action: MessageAction.PixelConnectionStatusRequest
+      action: MessageAction.PixelStatusRequest
+    });
+
+    sendMessageToContentScript({
+      action: MessageAction.CharacterSheetRequest
     });
   }, []);
 
@@ -79,7 +109,7 @@ const App: FunctionComponent = () => {
         }}
       />
       {pixelConnectionStatus === 'disconnected' && (
-        <button onClick={executeContentScript}>Connect to Pixel</button>
+        <button onClick={sendSelectPixelMessage}>Connect to Pixel</button>
       )}
       {pixelConnectionStatus !== 'disconnected' && (
         <Field label="Roll bonus" hint="A static number bonus to apply to the roll.">

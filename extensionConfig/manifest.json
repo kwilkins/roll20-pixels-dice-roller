@@ -22,5 +22,17 @@
 	"permissions": [
 		"activeTab",
 		"scripting"
+	],
+	"content_scripts": [
+		{
+			"matches": ["https://*.roll20.net/*", "https://*.roll20preflight.net/*"],
+			"js": ["selectPixel.js"]
+		},
+		{
+			"matches": ["https://*.roll20.net/*", "https://*.roll20preflight.net/*"],
+			"all_frames": true,
+			"run_at": "document_start",
+			"js": ["roll20Scraper.js"]
+		}
 	]
 }

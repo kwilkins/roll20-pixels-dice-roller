@@ -1,9 +1,7 @@
 /**
  * @copyright 2024 Kevin Wilkinson
  * @license GPL-3.0-or-later
- * @summary Executes file script to select and connect to a Pixel die.
- * @description Because the bluetooth api is not available to an extension popup window, we're executing the bluetooth
- * connection code in the tab context.
+ * @summary Executes scripts in the tab context.
  */
 
 import { getCurrentActiveTabId } from "./getCurrentActiveTab";
@@ -16,9 +14,10 @@ export const executeContentScript = async (): Promise<void> => {
 
 const executeContentScriptFile = async (tabId: number): Promise<void> => {
   await chrome.scripting.executeScript({
-    files: ['selectPixel.js'],
+    files: ['foobar.js'],
     target: {
-      tabId: tabId
+      tabId: tabId,
+      allFrames: true
     }
   });
 };
